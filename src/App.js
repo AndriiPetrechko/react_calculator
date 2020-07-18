@@ -1,26 +1,60 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import Keypad from './Components/Keypad';
+import Output from './Components/Output';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
 
-export default App;
+export default class App extends Component {
+  state = {
+    result: 'результат'
+  };
+  buttonPresed = buttonName => {
+    if (buttonName === "=") {
+      this.calculate();
+    } else if (this.state.result == 'результат') {
+      this.setState({
+        result: '' + buttonName
+      })
+    } else if (buttonName === "CE") {
+      this.backspace();
+    } else
+      this.setState({
+        result: this.state.result + buttonName
+      })
+  };
+  backspace = () => {
+    this.setState({
+      result: this.state.result.slice(0, -1)
+    });
+  }
+  calculate = e => {
+    try {
+      this.setState({
+        result: eval(this.state.result)
+      });
+    } catch (e) {
+      this.setState({
+        result: "error"
+      });
+    }
+  };
+  reset = e => {
+    this.setState({
+      result: ''
+    })
+  };
+  render() {
+    return (
+      <div className="wrapper">
+        <Output result={this.state.result} />
+        <Keypad
+          buttonPresed={this.buttonPresed}
+          reset={this.reset}
+        />
+        <div className="logo">
+          Made by A. Petrechko
+        </div>
+      </div>
+    );
+  }
+}

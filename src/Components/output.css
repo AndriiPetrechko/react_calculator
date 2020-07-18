@@ -1,0 +1,9 @@
+.result__field{
+    height: 100px;
+    width: 100%;
+    font-size: 45px;
+    background-color: #000;
+    text-align: center;
+    color: #00FF7F;
+    font-weight: 700;
+}
